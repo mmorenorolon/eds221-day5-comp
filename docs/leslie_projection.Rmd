@@ -43,27 +43,31 @@ Add line-by-line comments wheres prompted in the code below, explaining what eac
 # ------ WHAT HAPPENS HERE? ------ #
 # ------ comment line-by-line ---- #
 
-# The line below...
+# creating a sequence for time in years from 0 to 8 by 1 year increments
 time_yr <- seq(from = 0, to = 8, by = 1)
 
-# The line below...
+# Creating an empty matrix where the columns are the life stages
+  # and the rows are the time in years from 0 to 8
 proj_year <- matrix(ncol = length(fish_year0), nrow = length(time_yr))
 
-# The line below...
+# Storing first row of values, which is the initial population structure
 proj_year[1, ] <- fish_year0
 
-# The for loop below...
-for (i in 2:length(time_yr)) {
-  proj_year[i,] <- fish_leslie %*% proj_year[i-1,]
+# Calculate the population structure projection for the rest of the years
+#Starting at index = 2, since year 1 (year 0) already exists (fish_year0)
+for (i in 2:length(time_yr)) { 
+  proj_year[i,] <- fish_leslie %*% proj_year[i-1,] #pop projection equation
 }
-
-
 # The rest is wrangling & visualization (run to check it out):
+#updating the column names
 colnames(proj_year) <- c("eggs", "fry", "juvenile", "adult")
 
+#convert to data frame and pivot the data so columns are time(years), life stage,
+# and population.
 proj_df <- data.frame(time_yr, proj_year) %>% 
   pivot_longer(cols = -time_yr, names_to = "lifestage", values_to = "stage_population")
 
+#plotting the data frame
 ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
   geom_line(aes(color = lifestage)) +
   scale_y_log10()
