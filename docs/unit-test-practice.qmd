@@ -8,9 +8,9 @@ editor: visual
 ## Testing functions with {testthat}
 
 ```{r}
-# library(testthat)
-# library(devtools)
-# library(remotes)
+library(testthat)
+library(devtools)
+library(remotes)
 ```
 
 We’re writing a function to find the mean value of each column, then return the lowest and highest mean calculated (in that order). We would expect:
@@ -53,5 +53,3 @@ source(here::here("src", "food_cart_functions.R"))
 
 name_cart("strawberry", "marmot")
 ```
-
-
