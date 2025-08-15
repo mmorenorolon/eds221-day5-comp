@@ -1,0 +1,45 @@
+---
+title: "Unit Test Practice"
+author: "Melannie Moreno Rolon"
+format: html
+editor: visual
+---
+
+## Testing functions with {testthat}
+
+```{r}
+# library(testthat)
+# library(devtools)
+# library(remotes)
+```
+
+We’re writing a function to find the mean value of each column, then return the lowest and highest mean calculated (in that order). We would expect:
+
+- The outcome to be a numeric vector of length 2
+- The first value in the vector is smaller than the second value in that vector
+
+
+```{r}
+mean_range <- function(df) {
+  #returns the mean value of each column
+  col_means <- apply(X = df, MARGIN = 2, FUN = mean, na.rm = TRUE)
+  
+  #minimum and maximum values
+  col_mean_max <- max(col_means)
+  col_mean_min <- min(col_means)
+  
+  #return minimum and maximum values in a vector
+  return(c(col_mean_min, col_mean_max))
+}
+
+mean_range(mtcars)
+```
+
+```{r}
+#Test that the output is of length 2
+expect_length(mean_range(df = mtcars), 2)
+
+#Test that the first value < the second value
+expect_true(mean_range(mtcars)[1] < mean_range(mtcars)[2])
+```
+
